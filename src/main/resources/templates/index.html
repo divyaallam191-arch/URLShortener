@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>URL Shortener</title>
+    <style>
+        :root {
+            --bg: #e8f1f5;
+            --ink: #1a2b33;
+            --accent: #0d7377;
+            --accent-dark: #095456;
+            --panel: #ffffff;
+            --muted: #5a6d76;
+            --error: #b42318;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 12% 18%, rgba(13, 115, 119, 0.18), transparent 42%),
+                radial-gradient(circle at 88% 12%, rgba(26, 43, 51, 0.08), transparent 36%),
+                linear-gradient(160deg, #dceaf0 0%, var(--bg) 48%, #f4f8fa 100%);
+            display: grid;
+            place-items: center;
+            padding: 2rem 1rem;
+        }
+
+        main {
+            width: min(36rem, 100%);
+        }
+
+        h1 {
+            margin: 0 0 0.35rem;
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            letter-spacing: -0.03em;
+        }
+
+        .lead {
+            margin: 0 0 1.5rem;
+            color: var(--muted);
+        }
+
+        form {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        input[type="url"] {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1px solid #b7c9d1;
+            border-radius: 0.4rem;
+            font-size: 1rem;
+            background: var(--panel);
+        }
+
+        input[type="url"]:focus {
+            outline: 2px solid rgba(13, 115, 119, 0.35);
+            border-color: var(--accent);
+        }
+
+        button {
+            justify-self: start;
+            padding: 0.75rem 1.25rem;
+            border: 0;
+            border-radius: 0.4rem;
+            background: var(--accent);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: var(--accent-dark);
+        }
+
+        .error {
+            margin: 0;
+            color: var(--error);
+            font-size: 0.9rem;
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1.1rem 1.2rem;
+            background: var(--panel);
+            border-left: 4px solid var(--accent);
+        }
+
+        .result h2 {
+            margin: 0 0 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .result p {
+            margin: 0.4rem 0;
+            word-break: break-all;
+        }
+
+        .result a {
+            color: var(--accent);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <h1>URL Shortener</h1>
+    <p class="lead">Paste a long link and get a short one back.</p>
+
+    <form th:action="@{/shorten}" th:object="${request}" method="post">
+        <label for="url">URL</label>
+        <input id="url" type="url" th:field="*{url}" placeholder="https://example.com/very/long/path" required>
+        <p class="error" th:if="${#fields.hasErrors('url')}" th:errors="*{url}">Invalid URL</p>
+        <button type="submit">Shorten</button>
+    </form>
+
+    <section class="result" th:if="${result != null}">
+        <h2>Your short URL</h2>
+        <p>
+            <a th:href="${result.shortUrl}" th:text="${result.shortUrl}">https://localhost/abc123</a>
+        </p>
+        <p>
+            <span>Original:</span>
+            <span th:text="${result.originalUrl}">https://example.com</span>
+        </p>
+        <p>
+            <span>Code:</span>
+            <span th:text="${result.shortCode}">abc123</span>
+        </p>
+        <p th:if="${result.createdAt != null}">
+            <span>Created:</span>
+            <span th:text="${result.createdAt}">now</span>
+        </p>
+        <p th:if="${result.expiresAt != null}">
+            <span>Expires:</span>
+            <span th:text="${result.expiresAt}">never</span>
+        </p>
+    </section>
+</main>
+</body>
+</html>
