@@ -164,8 +164,11 @@ This keeps request handling, business logic, and data-access logic separated and
                                   ▼
                                 User
 
+```
 
-                    Deployment Architecture
+
+## Deployment Architecture
+```text
 
                          Spring Boot App
                                 │
@@ -177,6 +180,7 @@ This keeps request handling, business logic, and data-access logic separated and
                                 │
                                 ▼
                           Aiven MySQL
+
 ```
 
 ---
@@ -315,21 +319,6 @@ The application is deployed using the following architecture:
 | Containerization | Docker                      | Application packaging               |
 | Hosting          | Render                      | Hosts the deployed application      |
 | Database         | Aiven MySQL                 | Cloud-hosted persistent storage     |
-
-```text
-User
-  │
-  ▼
-Render
-  │
-  │ Dockerized Spring Boot Application
-  ▼
-Spring Boot
-  │
-  │ Spring Data JPA / Hibernate
-  ▼
-Aiven MySQL
-```
 
 ---
 
