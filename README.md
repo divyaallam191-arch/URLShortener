@@ -303,10 +303,6 @@ The application will start at:
 http://localhost:8080
 ```
 
-> **Security:** Never commit real database credentials, API keys, passwords, or other secrets to the repository.
-
----
-
 ## Deployment
 
 The application is deployed using the following architecture:
